@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Aula 1</title>
+</head>
+<body>
+<div id="app">
+	<input type="text" name="nome">
+	<button class="botao">Click</button>
+</div>
+<script type="text/javascript">
+		
+		var inputElement = document.querySelector('input[name=nome]');
+
+		var btnElement = document.querySelector('button.botao');
+
+		btnElement.onclick = function(){
+			var name = inputElement.value;
+			alert(name);
+		}
+
+</script>
+</body>
+</html>

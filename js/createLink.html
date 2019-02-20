@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Criar Link</title>
+</head>
+<body>
+<div id="app">
+	
+	<button name="btn">Enviar</button>
+</div>
+<script type="text/javascript">
+		
+		var linkElement = document.createElement('a');
+
+		linkElement.setAttribute('href', 'http://www.jurua.com.br');
+
+		var textElement = document.createTextNode("Site Juruá");
+
+		linkElement.appendChild(textElement);
+
+		var containerElement = document.querySelector('#app');
+
+		containerElement.appendChild(linkElement);
+
+		var btnElement = document.querySelector('button[name=btn]');
+
+		btnElement.onclick = function(){
+
+			setTimeout(containerElement.removeChild(linkElement), 5000);
+		}
+
+</script>
+</body>
+</html>
