@@ -1,9 +1,12 @@
+import api from './api';
+
 class App{
 
 	constructor(){
 		this.repository = [];
 
 		this.formEl = document.getElementById('repo-form');
+		this.inputEl = document.querySelector('input[name=repository');
 		this.listEl = document.getElementById('repo-list');
 
 		this.registerHandler();
@@ -13,18 +16,51 @@ class App{
 		this.formEl.onsubmit = event => this.addRepository(event);
 	}
 
-	addRepository(event){
+	async addRepository(event){
 		event.preventDefault();
 
-		this.repository.push({
-			name:'rocketseat.com.br',
-			description:'Tire sua ideia do papel',
-			avatar_url:'https://avatars1.githubusercontent.com/u/46029951?v=4',
-			html_url:'https://github.com/guiflr',
+		const repoInput = this.inputEl.value;
+
+		if(repoInput.lenght === 0) return;
+
+		this.setLoading();
+
+		try{
+			const response = await api.get(`/repos/${repoInput}`);
+
+			const {name, description, html_url, owner:{avatar_url}} = response.data;
+
+			this.repository.push({
+			name:name,
+			description,
+			html_url,
+			avatar_url,
+			
 		});
 	
 		this.render();
+
+		}catch(err){
+			alert('Repositório não existe');
+		}
+		
+		this.setLoading(false);
 	}
+
+	setLoading(loader = true){
+
+		if(loader === true){
+
+			let loadingEl = document.createElement('span');
+			loadingEl.appendChild(document.createTextNode('Carregando...'));
+			loadingEl.setAttribute('id','loading');
+
+			this.formEl.appendChild(loadingEl);
+		}else{
+
+			document.getElementById('loading').remove();
+		}
+	}	
 
 	render(){
 		this.listEl.innerHTML = '';
@@ -42,6 +78,7 @@ class App{
 
 			let linkEl = document.createElement('a');
 			linkEl.setAttribute('target','_blank');
+			linkEl.setAttribute('href',repo.html_url);
 			linkEl.appendChild(document.createTextNode('Acessar'));
 
 			let listItemEl = document.createElement('li');
